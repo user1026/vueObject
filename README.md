@@ -1,24 +1,4 @@
-# newvue
+系统设置下全部完成
+商城管理下，剩秒杀活动没有完成，
+图表和权限没做
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
