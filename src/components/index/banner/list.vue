@@ -76,5 +76,8 @@
   </script>
   
   <style lang="less" scoped>
-  
+  img{
+    width: 100px;
+    height: 100px;
+  }
   </style>

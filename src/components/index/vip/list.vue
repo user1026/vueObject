@@ -4,9 +4,9 @@
       :tree-props="{children: 'children'}">
       <el-table-column prop="uid" label="用户编号" sortable width="180">
       </el-table-column>
-      <el-table-column prop="username" label="昵称" sortable width="180">
+      <el-table-column prop="nickname" label="昵称" sortable width="180">
       </el-table-column>
-      <el-table-column prop="roleid" label="电话号">
+      <el-table-column prop="phone" label="电话号">
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">

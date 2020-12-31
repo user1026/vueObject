@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow">
+    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow" @closed="rest">
       <el-form :model="form" :rules="rules">
         <el-form-item label="菜单名称" prop="title" :label-width="formLabelWidth">
           <el-input v-model="form.title" autocomplete="off"></el-input>
@@ -61,22 +61,7 @@
           url: '',
           status: 2,
         },
-        computed: {
-          // ...mapGetters({
-          //   mform: 'menu/form',
-          // }),
-          // form() {
-          //   return this.mform;
-          // },
-        },
-        watch: {
-          // form(val) {
-          //   if(this.childmenu.isup){
-          //     console.log(val);
-          //     this.form=val;
-          //   }
-          // },
-        },
+        
         rules: {
           title: [{
               required: true,
@@ -119,28 +104,30 @@
         }
       },
       add() {
-        let _this = this;
+        
         if (this.childmenu.isup == true) {
           this.form.id = this.childmenu.id;
           menuup(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '修改成功',
                 type: 'success'
               });
-              _this.$parent.init();
+              this.$parent.init();
+              this.rest();
+              this.formempty();
             }
           })
         } else {
           menuadd(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '添加成功',
                 type: 'success'
               });
-              _this.$parent.init();
-              this.childmenu.isshow = false;
-              _this.formempty();
+              this.$parent.init();
+              this.rest();
+              this.formempty();
             }
           })
         }

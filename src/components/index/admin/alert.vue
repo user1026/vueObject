@@ -1,6 +1,6 @@
 <template>
     <div>
-      <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow">
+      <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow" @closed="rest">
         <el-form :model="form">
           
           <el-form-item label="所属角色" :label-width="formLabelWidth">
@@ -45,6 +45,7 @@
         return {
           formLabelWidth: '100px',
           form: {
+            roleid:0,
             title: "",
            username:'',
            password:'',
@@ -65,8 +66,7 @@
             }
           })
         if (this.childmenu.isup == true) {
-          // this.form = this.upform();
-          // console.log(this.form)
+          
           adinfo(this.childmenu.id).then(res => {
             if (res.data.code == 200) {
               this.form = res.data.list;
@@ -75,40 +75,39 @@
         }
       },
       methods: {
-        // ...mapGetters({
-        //   upform: 'menu/form',
-        // }),
         formempty() {
           this.form = {
-           roleid: "",
+           roleid: 0,
            username:'',
            password:'',
             status: 2,
           }
         },
         add() {
-          let _this = this;
+         
           if (this.childmenu.isup == true) {
              this.form.id=this.childmenu.id;
             adup(this.form).then(res => {
               if (res.data.code == 200) {
-                _this.$message({
+                this.$message({
                   message: '修改成功',
                   type: 'success'
                 });
-                _this.$parent.init();
+                this.$parent.init();
+                this.rest();
+                this.formempty();
               }
             })
           } else {
             adadd(this.form).then(res => {
               if (res.data.code == 200) {
-                _this.$message({
+                this.$message({
                   message: '添加成功',
                   type: 'success'
                 });
-                _this.$parent.init();
-                this.childmenu.isshow = false;
-                _this.formempty();
+                this.$parent.init();
+                this.rest();
+                this.formempty();
               }
             })
           }

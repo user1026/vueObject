@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow">
+    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow" @closed="rest">
       <el-form :model="form">
   
         <el-form-item label="标题" prop="title" :label-width="formLabelWidth">
@@ -60,29 +60,31 @@
       },
       httpRequest(){},
       add() {
-        let _this = this;
+        
         if (this.childmenu.isup == true) {
           this.form.id = this.childmenu.id;
           bannerup(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '修改成功',
                 type: 'success'
               });
-              _this.$parent.init();
+              this.$parent.init();
+              this.rest();
+              this.formempty();
             }
           })
         } else {
           console.log(this.form)
           banneradd(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '添加成功',
                 type: 'success'
               });
-              _this.$parent.init();
-              this.childmenu.isshow = false;
-              _this.formempty();
+              this.$parent.init();
+              this.rest();
+              this.formempty();
             }
           })
         }

@@ -1,39 +1,36 @@
 <template>
   <div>
-    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow">
-     {{form}}
+    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow" @closed="rest">
+      {{form}}{{Time}}
       <el-form :model="form" :rules="rules">
         <el-form-item label="活动名称" prop="title" :label-width="formLabelWidth">
           <el-input v-model="form.title" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="活动时间" :label-width="formLabelWidth">
-          <el-date-picker
-          v-model="form.time"
-          type="monthrange"
-          range-separator="至"
-          start-placeholder="开始月份"
-          end-placeholder="结束月份">
-        </el-date-picker>
+          <el-date-picker v-model="Time" value-format="yyyy-MM-dd" type="daterange" range-separator="至"
+            start-placeholder="开始月份" end-placeholder="结束月份">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="一级分类" :label-width="formLabelWidth">
-          <el-select v-model="form.first_cateid" placeholder="请选择上级菜单" >
-            <el-option :label="item.title" :value="item.id" v-for="item in list" :key="item.id"></el-option>
+          <el-select v-model="form.first_cateid"  @change="changefirst" placeholder="请选择上级菜单">
+            <el-option :label="item.catename" :value="item.id" v-for="item in getfirst" :key="item.id"
+             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="二级分类" :label-width="formLabelWidth">
-          <el-select v-model="form.second_cateid" placeholder="请选择上级菜单" >
-            <el-option :label="item.title" :value="item.id" v-for="item in list" :key="item.id"></el-option>
+          <el-select v-model="form.second_cateid" @change="changesecond" placeholder="请选择上级菜单">
+            <el-option :label="item.catename" :value="item.id" v-for="item in second"  :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="商品" :label-width="formLabelWidth">
-          <el-select v-model="form.good" placeholder="请选择上级菜单" >
-            <el-option :label="item.title" :value="item.id" v-for="item in list" :key="item.id"></el-option>
+          <el-select v-model="form.goodsid" placeholder="请选择上级菜单">
+            <el-option :label="item.goodsname" :value="item.id" v-for="item in goods"  :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth">
           <el-switch v-model="form.status" :active-value="1" :inactive-value="2">
           </el-switch>
-        </el-form-item> 
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="rest">取 消</el-button>
@@ -45,12 +42,15 @@
 
 <script>
   import {
-    mapGetters
+    mapGetters,
+    mapActions,
   } from "vuex";
   import {
-    menuadd,
-    menuup,
-    menuinfo
+    seckadd,
+    seckup,
+    seckinfo,
+    catelist,
+    goodslist,
   } from '../../../util/http.js';
   export default {
     name: 'alert',
@@ -59,29 +59,17 @@
       return {
         formLabelWidth: '100px',
         form: {
-          pid: 0,
           title: "",
-          type: 1,
-          icon: '',
-          url: '',
+          begintime: '',
+          endtime: '',
+          first_cateid: '',
+          second_cateid: '',
+          goodsid: '',
           status: 2,
         },
-        computed: {
-          // ...mapGetters({
-          //   mform: 'menu/form',
-          // }),
-          // form() {
-          //   return this.mform;
-          // },
-        },
-        watch: {
-          // form(val) {
-          //   if(this.childmenu.isup){
-          //     console.log(val);
-          //     this.form=val;
-          //   }
-          // },
-        },
+        Time: [],
+        second: [],
+        goods: [],
         rules: {
           title: [{
               required: true,
@@ -89,80 +77,110 @@
               trigger: 'blur'
             },
             {
-              min: 3,
-              max: 5,
-              message: '长度在 3 到 5 个字符',
+              min: 2,
+              max: 20,
+              message: '长度在 2 到 20 个字符',
               trigger: 'blur'
             }
           ]
         },
-        icon: ['el-icon-s-tools', 'el-icon-s-goods', 'el-icon-info', 'el-icon-s-custom', 'el-icon-s-cooperation',
-          'el-icon-s-help'
-        ],
-        url: [],
-
       };
     },
     created() {
 
     },
     mounted() {
-      this.url = this.$router.options.routes[1].children;
+
+    },
+    computed: {
+      ...mapGetters({
+        getfirst: 'cate/getcatelist',
+        getspecslist: 'specs/getspecslist'
+      })
     },
     methods: {
-       ...mapGetters({
-         upform: 'menu/form',
-       }),
+      ...mapActions({
+        cateList: 'cate/cateList',
+        specslist: 'specs/reqspecslist',
+      }),
       formempty() {
         this.form = {
-          pid: 0,
           title: "",
-          type: 1,
-          icon: '',
-          url: '',
+          begintime: '',
+          endtime: '',
+          first_cateid: '',
+          second_cateid: '',
+          goodsid: '',
           status: 2,
         }
+        
       },
       add() {
-        let _this = this;
+        // this.form.begintime = new Date(this.Time[0]).getTime()
+        // this.form.endtime = new Date(this.Time[1]).getTime()
+        this.form.begintime = this.Time[0]
+        this.form.endtime = this.Time[1]
         if (this.childmenu.isup == true) {
           this.form.id = this.childmenu.id;
-          menuup(this.form).then(res => {
+         
+          seckup(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '修改成功',
                 type: 'success'
               });
-              _this.$parent.init();
+              this.$parent.init();
+              this.rest();
+              this.formempty();
             }
           })
         } else {
-          menuadd(this.form).then(res => {
+          seckadd(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '添加成功',
                 type: 'success'
               });
-              _this.$parent.init();
-              this.childmenu.isshow = false;
-              _this.formempty();
+              this.$parent.init();
+              this.rest();
+              this.formempty();
             }
           })
         }
       },
-      changePid() {
-        this.form.pid == 0 ? this.form.type = 1 : this.form.type = 2;
+      changefirst() {
+        console.log(11)
+        this.second = [];
+        catelist(this.form.first_cateid).then(res => {
+          if (res.data.code == 200) {
+            this.second = res.data.list;
+          }
+        })
       },
       rest() {
         this.childmenu.isshow = false;
         this.childmenu.isup = false;
       },
-       upload(id){
-         menuinfo(id).then(res=>{
-             this.form=res.data.list;
-             this.form.id=id;
-         })
-       }
+      upload(id) {
+       seckinfo(id).then(res => {
+          this.form = res.data.list;
+          this.Time[0]=this.form.begintime;
+          this.Time[1]=this.form.endtime;
+          this.form.id = id;
+          this.changefirst();
+          this.changesecond();
+          this.$set(this.Time);
+        })
+      },
+      changesecond(){
+        goodslist().then(res=>{
+          if(res.data.code==200){
+            this.goods = res.data.list.filter(val=>{
+              return val.second_cateid==this.form.second_cateid;
+             })
+          }
+        })
+      },
     },
   };
 </script>

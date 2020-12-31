@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow"  @opened="opened">
+    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow"  @opened="opened" @closed="rest">
       {{form}}
       <el-form :model="form">
         <el-form-item label="一级分类" :label-width="formLabelWidth">
@@ -70,7 +70,6 @@
     mapActions
   } from "vuex";
   import {
-    //cateinfo,
     catelist,
     goodsadd,
     goodsup,
@@ -152,6 +151,8 @@
                 type: 'success'
               });
               this.$parent.init();
+             this.rest();
+              this.formempty();
             }
           })
         } else {
@@ -169,9 +170,10 @@
         }
       },
       changefirst() {
-        catelist({pid:this.form.first_cateid}).then(res => {
+        this.second=[];
+        catelist(this.form.first_cateid).then(res => {
           if (res.data.code==200) {
-            this.second = res.data.list[0].children;
+            this.second = res.data.list;
           }
         })
       },
@@ -179,9 +181,7 @@
         let at=this.attrslist.find(item=>item.id==this.form.specsid)
         this.attrs=at?at.attrs:[];
       },
-      changePid() {
-
-      },
+     
       changeImg2(e) {
         let file = e.raw;
         //判断
@@ -198,6 +198,7 @@
           this.imageUrl='http://localhost:3000'+this.form.img;
           this.form.specsattr=this.form.specsattr.split(',')
           this.form.id = id;
+         this.changefirst();
         })
       },
       opened() {

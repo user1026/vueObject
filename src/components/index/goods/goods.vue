@@ -3,6 +3,7 @@
         <el-button type="primary" @click="add()">添加</el-button>
         <v-list :list="list" :childmenu="pmenu"></v-list>
         <v-alert :childmenu="pmenu" ref="al" :list="list"></v-alert>
+        
     </div>
 </template>
 
@@ -38,7 +39,7 @@
                 },
                 list: [],
                 ad: {
-                    size: 2,
+                    size: 100,
                     page: 1,
                 },
                 total: 0,

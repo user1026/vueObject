@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow">
+    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow" @closed="rest">
       {{form}}
       <el-form :model="form">
         <el-form-item label="上级菜单" :label-width="formLabelWidth">
@@ -77,8 +77,7 @@
                 type: 'success'
               });
               this.$parent.init();
-              this.childmenu.isshow = false;
-              this.childmenu.isup = false;
+              this.rest();
               this.formempty();
             }
           })
@@ -90,7 +89,7 @@
                 type: 'success'
               });
               this.$parent.init();
-              this.childmenu.isshow = false;
+              this.rest();
               this.formempty();
             }
           })

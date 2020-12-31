@@ -5,6 +5,7 @@
 </template>
 
 <script>
+ 
 export default {
   name: 'App',
   components: {  },
@@ -23,6 +24,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  
 #app{
   width: 100%;
   height: 100%;

@@ -37,7 +37,7 @@
                 </el-menu>
             </el-aside>
             <el-container>
-                <el-header>Header</el-header>
+                <el-header>{{username}}</el-header>
                 <el-main>
                     <el-breadcrumb separator="/">
                         <el-breadcrumb-item to="/index">首页</el-breadcrumb-item>
@@ -56,11 +56,12 @@
         name: 'index',
         data() {
             return {
-
+                username: '',
             };
         },
         mounted() {
-
+            this.username = JSON.parse(localStorage.getItem('userinfo')).username;
+           
         },
         methods: {
 
@@ -70,9 +71,4 @@
 
 <style lang="less" scoped>
     @import '../assets/css/index.css';
-
-    .index {
-        width: 100%;
-        height: 100%;
-    }
 </style>

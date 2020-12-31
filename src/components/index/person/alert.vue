@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow">
+    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow" @closed="rest">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="角色名称">
           <el-input v-model="form.rolename"></el-input>
@@ -23,9 +23,6 @@
 </template>
 
 <script>
-  // import {
-  //   mapGetters
-  // } from "vuex";
   import {
     personadd,
     personup,
@@ -35,29 +32,6 @@
   export default {
     name: 'alert',
     props: ["childmenu", 'list'],
-    computed: {
-      // ...mapGetters({
-      //   pform: 'person/pform',
-      // }),
-      // personform() {
-      //   return this.pform;
-      // },
-    },
-    watch: {
-      // personform(val) {
-      //   if (this.childmenu.isup) {
-      //     this.form = val;
-
-      //     if (val.menus.length>0) {
-      //      this.form.menus = [];
-      //       console.log(val.menus)
-      //         // val.menus.split(',').forEach(item=>{
-      //         //   this.form.menus.push(parseInt(item));
-      //         // })
-      //     }
-      //   }
-      // },
-    },
     data() {
       return {
         formLabelWidth: '100px',
@@ -117,9 +91,6 @@
       })
     },
     methods: {
-      // ...mapGetters({
-      //   upform: 'menu/form',
-      // }),
       formempty() {
         this.form = {
           rolename: '',
@@ -128,33 +99,32 @@
         }
       },
       add() {
-        let _this = this;
+        
         if (this.childmenu.isup == true) {
           this.form.id = this.childmenu.id;
           this.form.menus = this.$refs.keylist.getCheckedKeys();
           personup(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '修改成功',
                 type: 'success'
               });
-              _this.$parent.init();
-              this.childmenu.isshow = false;
-              this.childmenu.isup = false;
-              _this.formempty();
+              this.$parent.init();
+             this.rest();
+              this.formempty();
             }
           })
         } else {
           this.form.menus = this.$refs.keylist.getCheckedKeys();
           personadd(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '添加成功',
                 type: 'success'
               });
-              _this.$parent.init();
-              this.childmenu.isshow = false;
-              _this.formempty();
+              this.$parent.init();
+             this.rest();
+              this.formempty();
             }
           })
         }
@@ -165,8 +135,6 @@
       rest() {
         this.childmenu.isshow = false;
         this.childmenu.isup = false;
-        console.log(this.form);
-        console.log(this.$refs.keylist.getCheckedKeys())
       },
       upload(id) {
         this.form = {};

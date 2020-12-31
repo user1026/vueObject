@@ -17,14 +17,14 @@
       </el-table-column>
       <el-table-column label="是否新品">
         <template slot-scope="scope">
-          <el-button type="primary" v-if="scope.row.isnow===1">启用</el-button>
-          <el-button type="info" v-else>禁用</el-button>
+          <el-button type="primary" v-if="scope.row.isnow===1">是</el-button>
+          <el-button type="info" v-else>否</el-button>
         </template>
       </el-table-column>
       <el-table-column label="是否热卖">
         <template slot-scope="scope">
-          <el-button type="primary" v-if="scope.row.ishot===1">启用</el-button>
-          <el-button type="info" v-else>禁用</el-button>
+          <el-button type="primary" v-if="scope.row.ishot===1">是</el-button>
+          <el-button type="info" v-else>否</el-button>
         </template>
       </el-table-column>
       <el-table-column label="状态">
@@ -94,5 +94,8 @@
 </script>
 
 <style lang="less" scoped>
-
+img{
+  width: 100px;
+  height: auto;
+}
 </style>

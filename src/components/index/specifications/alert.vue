@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow">
+    <el-dialog :title="childmenu.isup==true?'编辑':'添加'" :visible.sync="childmenu.isshow" @closed="rest">
       {{form}}{{domains}}
       <el-form :model="form">
         <el-form-item label="规格名称" prop="specsname" :label-width="formLabelWidth">
@@ -64,16 +64,18 @@
         this.domains=[{value:''}];
       },
       add() {
-        let _this = this;
+       
         if (this.childmenu.isup == true) {
           this.form.id = this.childmenu.id;
           specsup(this.form).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 message: '修改成功',
                 type: 'success'
               });
-              _this.$parent.init();
+              this.$parent.init();
+              this.rest();
+              this.formempty();
             }
           })
         } else {
@@ -88,7 +90,7 @@
                 type: 'success'
               });
               this.$parent.init();
-              this.childmenu.isshow = false;
+              this.rest();
               this.formempty();
             }
           })

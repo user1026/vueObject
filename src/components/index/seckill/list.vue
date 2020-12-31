@@ -2,7 +2,7 @@
   <div>
     <el-table :data="list" style="width: 100%;margin-bottom: 20px;" row-key="id" border
       :tree-props="{children: 'children'}" >
-      <el-table-column prop="title" label="菜单名称" sortable width="180">
+      <el-table-column prop="title" label="活动名称" sortable width="180">
       </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">
@@ -39,27 +39,27 @@
     methods: {
      
        up(id) {
-         
+          
           this.$parent.sendlist(id);
       },
       del(id) {
-        let _this = this;
-        _this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+       
+        this.$confirm('此操作将永久删除, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           seckdel(id).then(res => {
             if (res.data.code == 200) {
-              _this.$message({
+              this.$message({
                 type: 'success',
                 message: '删除成功!'
               });
-              _this.$parent.init();
+              this.$parent.init();
             }
           })
         }).catch(() => {
-          _this.$message({
+          this.$message({
             type: 'info',
             message: '已取消删除'
           });
