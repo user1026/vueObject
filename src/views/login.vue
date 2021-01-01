@@ -22,7 +22,7 @@
   import {
     reqlogin
   } from '../util/http.js';
-  
+  import {mapGetters,mapActions} from 'vuex';
   export default {
     name: 'login',
     data() {
@@ -33,11 +33,20 @@
         }
       };
     },
+    computed: {
+      ...mapGetters({
+        getuserinfo:"getuserinfo",
+      })
+    },
     methods: {
+      ...mapActions({
+        requserinfo:'requserinfo'
+      }),
       login() {
         reqlogin(this.form).then(res => {
           if (res.data.code == 200) {
             localStorage.setItem('userinfo',JSON.stringify(res.data.list));
+            this.requserinfo(res.data.list);
             this.$router.push("/index");
           }
         })

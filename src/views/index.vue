@@ -14,9 +14,9 @@
                             <span>系统设置</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="/index/vmenu"> <i class="el-icon-menu"></i>菜单管理</el-menu-item>
-                            <el-menu-item index="/index/person"> <i class="el-icon-menu"></i>角色管理</el-menu-item>
-                            <el-menu-item index="/index/admin"> <i class="el-icon-menu"></i>管理员管理</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/vmenu')" index="/index/vmenu"> <i class="el-icon-menu"></i>菜单管理</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/person')" index="/index/person"> <i class="el-icon-menu"></i>角色管理</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/admin')" index="/index/admin"> <i class="el-icon-menu"></i>管理员管理</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
 
@@ -26,12 +26,12 @@
                             <span>商城管理</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="/index/cate">商品分类</el-menu-item>
-                            <el-menu-item index="/index/specs">商品规格</el-menu-item>
-                            <el-menu-item index="/index/goods">商品管理</el-menu-item>
-                            <el-menu-item index="/index/vip">会员管理</el-menu-item>
-                            <el-menu-item index="/index/banner">轮播图管理</el-menu-item>
-                            <el-menu-item index="/index/seckill">秒杀活动</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/cate')" index="/index/cate">商品分类</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/specs')" index="/index/specs">商品规格</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/goods')" index="/index/goods">商品管理</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/vip')" index="/index/vip">会员管理</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/banner')" index="/index/banner">轮播图管理</el-menu-item>
+                            <el-menu-item v-if="userinfo.menus_url.includes('/seckill')" index="/index/seckill">秒杀活动</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+    import {mapGetters,mapActions} from 'vuex';
     export default {
         name: 'index',
         data() {
@@ -59,12 +60,21 @@
                 username: '',
             };
         },
-        mounted() {
-            this.username = JSON.parse(localStorage.getItem('userinfo')).username;
+        computed: {
+            ...mapGetters({
+                userinfo:'getuserinfo',
+            }),
            
         },
+        mounted() {
+            //this.username = JSON.parse(localStorage.getItem('userinfo')).username;
+           this.username=this.userinfo.username;
+        },
         methods: {
-
+            ...mapActions({
+                requserinfo:'requserinfo',
+            }),
+           
         },
     };
 </script>

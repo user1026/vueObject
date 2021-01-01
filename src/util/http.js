@@ -1,10 +1,13 @@
 import axios from 'axios';
 import qs from 'qs';
+import Vue from 'vue';
+import store from '../store';
 let baseurl = '/api'
-
+import router from '../router'
 axios.interceptors.request.use(req=>{
     if(req.url!==baseurl+"/api/userlogin"){
-       req.headers.authorization=JSON.parse(localStorage.getItem('userinfo')).token
+       //req.headers.authorization=JSON.parse(localStorage.getItem('userinfo')).token
+       req.headers.authorization=store.state.userinfo.token;
     }
       return req;
 })
@@ -15,9 +18,10 @@ axios.interceptors.response.use(res => {
     if (res.data.code !== 200) {
         alert(res.data.msg)
     }
-    // if(res.data.msg=="登录已过期或访问权限受限"){
-          
-    // }
+     if(res.data.msg=="登录已过期或访问权限受限"){
+         store.dispatch('requserinfo', {});
+         router.push('/login');
+     }
     if (!res.data.list) {
         res.data.list = [];
     }

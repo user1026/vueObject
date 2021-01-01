@@ -60,7 +60,6 @@
             catelist().then(res => {
                 this.init(res.data.list)
                 myChart.setOption(this.option);
-                console.log(this.option.series.data, this.option.xAxis.data)
             })
         },
         methods: {
