@@ -28,7 +28,7 @@
               id:0,
           },
        list:[],
-       baseurl:'http://localhost:3000'
+       baseurl:'http://47.100.79.78'
       };
     },
     watch: {

@@ -99,8 +99,9 @@
       upload(id) {
         bannerinfo(id).then(res => {
           this.form = res.data.list;
-          this.form.img+='http://localhost:3000';
+          this.form.img=this.$baseUrl+ this.form.img;
           this.form.id = id;
+          this.imageUrl=this.form.img
         })
       },
       changeImg2(e){

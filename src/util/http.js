@@ -2,7 +2,8 @@ import axios from 'axios';
 import qs from 'qs';
 import Vue from 'vue';
 import store from '../store';
-let baseurl = '/api'
+//let baseurl = '/api'
+let baseurl = 'http://47.100.79.78'
 import router from '../router'
 axios.interceptors.request.use(req=>{
     if(req.url!==baseurl+"/api/userlogin"){
@@ -15,9 +16,9 @@ axios.interceptors.response.use(res => {
     console.group("本次请求地址是：" + res.config.url)
     console.log(res);
     console.groupEnd()
-    if (res.data.code !== 200) {
-        alert(res.data.msg)
-    }
+     if (res.data.code !== 200) {
+         alert(res.data.msg)
+     }
      if(res.data.msg=="登录已过期或访问权限受限"){
          store.dispatch('requserinfo', {});
          router.push('/login');

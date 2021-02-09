@@ -8,7 +8,7 @@
               <el-input v-model="form.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-              <el-input v-model="form.password"></el-input>
+              <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
           </el-form>
           <el-button type="primary" @click="login">登录</el-button>
@@ -53,7 +53,6 @@
       }
     },
     mounted() {
-      console.log("如果登录不了，请将后台routes下的login.js，32行的role.menus=JSON.parse(role[0].menus)改为role.menus=role[0].menus")
      
     },
   };

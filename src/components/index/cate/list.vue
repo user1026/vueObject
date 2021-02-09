@@ -8,7 +8,7 @@
         </el-table-column>
         <el-table-column  label="菜单图片">
           <template slot-scope="scope">
-            <img v-if="scope.row.img!=='null'" :src="scope.row.img" alt="#">
+            <img v-if="scope.row.img!=='[object Object]'" :src="scope.row.img" alt="#">
         </template>
         </el-table-column>
         <el-table-column label="状态">

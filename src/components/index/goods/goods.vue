@@ -83,7 +83,7 @@
                         }
                         this.list = res.data.list
                         this.list.forEach(val=>{
-                            val.img='http://localhost:3000'+ val.img
+                            val.img=this.$baseUrl+ val.img
                         })
                     }
                 })
@@ -100,5 +100,7 @@
 </script>
 
 <style lang="less" scoped>
-
+th{
+    text-align: center !important;
+}
 </style>

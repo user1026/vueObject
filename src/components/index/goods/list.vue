@@ -1,33 +1,33 @@
 <template>
-  <div>
+  <div class="goodlist">
     <el-table :data="list" style="width: 100%;margin-bottom: 20px;" row-key="id" border
       :tree-props="{children: 'children'}" >
-      <el-table-column prop="id" label="商品编号" sortable width="100">
+      <el-table-column prop="id" label="商品编号" sortable width="120">
       </el-table-column>
-      <el-table-column prop="goodsname" label="商品名称" sortable width="100">
+      <el-table-column prop="goodsname" label="商品名称" sortable width="120">
       </el-table-column>
-      <el-table-column prop="price" label="商品价格">
+      <el-table-column prop="price" label="商品价格" width="80">
       </el-table-column>
-      <el-table-column prop="market_price" label="市场价格">
+      <el-table-column prop="market_price" label="市场价格" width="80">
       </el-table-column>
       <el-table-column  label="图片">
         <template slot-scope="scope">
           <img v-if="scope.row.img!=='null'" :src="scope.row.img" alt="#">
       </template>
       </el-table-column>
-      <el-table-column label="是否新品">
+      <el-table-column label="是否新品" width="100">
         <template slot-scope="scope">
           <el-button type="primary" v-if="scope.row.isnow===1">是</el-button>
           <el-button type="info" v-else>否</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="是否热卖">
+      <el-table-column label="是否热卖" width="100">
         <template slot-scope="scope">
           <el-button type="primary" v-if="scope.row.ishot===1">是</el-button>
           <el-button type="info" v-else>否</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="状态">
+      <el-table-column label="状态" width="100">
         <template slot-scope="scope">
           <el-button type="primary" v-if="scope.row.status===1">启用</el-button>
           <el-button type="info" v-else>禁用</el-button>
@@ -60,9 +60,7 @@
 
     },
     methods: {
-      
        up(id) {
-          
           this.$parent.sendlist(id);
       },
       del(id) {
@@ -97,5 +95,6 @@
 img{
   width: 100px;
   height: auto;
+  margin: 0 auto;
 }
 </style>

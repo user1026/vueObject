@@ -77,7 +77,7 @@
   
   <style lang="less" scoped>
   img{
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: auto;
   }
   </style>
